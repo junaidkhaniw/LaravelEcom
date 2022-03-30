@@ -1,0 +1,39 @@
+.sb-nav-fixed #layoutSidenav #layoutSidenav_content main {
+    padding: 10px 20px !important;
+}
+
+#layoutSidenav_content main table {
+    margin-top: 15px;
+}
+
+.pull-left {
+    float: left;
+}
+
+.pull-right {
+    float: right;
+}
+
+.create_p_b {
+    margin: 7px 0 0 0;
+}
+
+.a_btn {
+    color: #fff;
+    border: 1px solid #ffffff;
+    background: #1c1c1c;
+}
+
+.a_btn:hover, .a_btn:focus {
+    color: #1c1c1c;
+    background: #fff;
+    border: 1px solid #1c1c1c;
+}
+
+.loggedin_user {
+    margin-top: 7px;
+}
+
+.c_w {
+    color: #fff !important;
+}
