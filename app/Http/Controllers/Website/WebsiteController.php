@@ -90,19 +90,12 @@ class WebsiteController extends Controller
         return redirect()->route('cart')->with('success', 'Removed From Cart');
     }
 
-    public function checkout(Request $request)
+    public function checkout()
     {
-        $product_id = $request->product_id;
-        $session_id = $request->session()->getId();
-        $c_user = Auth::user()->id;
-
-        $countProducts = Cart::where('session_id', $session_id)->count();
-
-        $productslist = Cart::join('products', 'products.id', '=', 'cart.product_id')
-        ->where( 'session_id', $session_id )->select( 'products.*', 'quantity' )->get();
-
-        return view('front.checkout', compact('productslist', 'countProducts'));
-
+        $cart = session()->get('cart');
+        if(isset($cart)) {
+            return view('front.checkout');
+        }    
     }
 
     public function add_customer(Request $request)
@@ -119,7 +112,7 @@ class WebsiteController extends Controller
         $customer->zip      = $request->zip;
         $customer->save();
 
-        return redirect()->route('site')->with('success','Customer Added Successfully');
+        return redirect()->route('stripe')->with('success','Customer Added Successfully');
     }
 
 }

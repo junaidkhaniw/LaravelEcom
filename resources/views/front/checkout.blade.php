@@ -10,23 +10,33 @@
             <div class="col-md-4 order-md-2 mb-4">
               <h4 class="d-flex justify-content-between align-items-center mb-3">
                 <span class="text-muted">Your cart</span>
-                <span class="badge badge-secondary badge-pill">{{ $countProducts }}</span>
+                @php
+                    if(session('cart')) {
+                        $cartSession = session('cart');
+                        $cartCount = count($cartSession);
+                    }
+                @endphp
+                <span class="badge badge-secondary badge-pill">@if (session('cart')) {{ $cartCount }} @else 0 @endif</span>
               </h4>
               <ul class="list-group mb-3">
+
                 @php $total = 0; @endphp
-                @foreach ($productslist as $item)
-                    <li class="list-group-item d-flex justify-content-between lh-condensed">
-                        <div style="float: left; margin-right:10px" class="col-md-2">
-                            <img src="images/{{ $item->image }}" alt="{{ $item->id }}" width="50px">
-                        </div>
-                        <div class="col-md-10">
-                            <strong class="my-0">{{ $item->name }} <small class="itemQuantity">{{ $item->quantity }}x</small></strong>
-                            <small class="text-muted" style="display: block">{{ $item->details }}</small>
-                            <span class="text-muted">${{$item->sale_price*$item->quantity}}</span>
-                        </div>
-                    </li>
-                    @php $total = $total + $item->sale_price * $item->quantity; @endphp
-                @endforeach
+                @if (session('cart'))
+                    @foreach (session('cart') as $id => $products)
+                        <li class="list-group-item d-flex justify-content-between lh-condensed">
+                            <div style="float: left; margin-right:10px" class="col-md-2">
+                                <img src="images/{{ $products['image'] }}" alt="{{ $products['name'] }}" width="50px">
+                            </div>
+                            <div class="col-md-10">
+                                <strong class="my-0">{{ $products['name'] }} <small class="itemQuantity">{{ $products['quantity'] }}x</small></strong>
+                                <small class="text-muted" style="display: block">{{ $products['details'] }}</small>
+                                <span class="text-muted">${{ $products['sale_price'] * $products['quantity'] }}</span>
+                            </div>
+                        </li>
+                        @php $total = $total + $products['sale_price'] * $products['quantity']; @endphp
+                    @endforeach
+                @endif
+
                 <li class="list-group-item d-flex justify-content-between">
                   <span>Total (USD)</span>
                   <strong>${{$total}}</strong>
